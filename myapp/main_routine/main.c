@@ -10,26 +10,27 @@
 #include <sys/wait.h>   /*Linux下等待序列相关：如wait、waitpid*/
 
 /*Created By qinfei*/
+#include <debug.h>	
 #include <leds.h>	
 
 int main(int argc, char **argv)
 {
 	int ret = 0;
 	
-	//dbg("Tiny6410 App start ...\n");
+	dbg("Tiny6410 App start ...\n");
 
 	/*LED 初始化*/
 	ret = Leds_Init();
 	if(ret == -1)
 	{
-		printf("Not Open /dev/leds!\n");			
+		err("Not Open /dev/leds!\n");			
 	}
 	else
 	{
-		printf("Successfully Open /dev/leds!\n");	
+		dbg("Successfully Open /dev/leds!\n");	
 	}
 	
-	printf("Entering endless loop...\n");			
+	dbg("Entering endless loop...\n");			
 	while(1) 
 	{
 		sleep(60);

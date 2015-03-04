@@ -6,7 +6,7 @@
 #define __LEDS_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C" {/*表示编译生成的内容符号名，使用C约定*/
 #endif
 
 
