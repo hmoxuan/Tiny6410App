@@ -1,3 +1,8 @@
+/**
+ * mini6410_leds.c file implement Tiny6410.
+ * Author: qinfei 2015.03.04
+ */
+
 #include <linux/miscdevice.h>
 #include <linux/delay.h>
 #include <asm/irq.h>
@@ -31,41 +36,46 @@
 #include <mach/gpio-bank-e.h>
 #include <mach/gpio-bank-k.h>
 
-#define DEVICE_NAME "leds"
+#define DEVICE_NAME "leds"	//设备名
 
+/* 通过ioctl,控制LED */
 static long Tiny6410_leds_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
+	unsigned tmp;
+	
+	//根据命令控制LED灯亮灭
 	switch(cmd) {
-		unsigned tmp;
-	case 0:
-	case 1:
-		if (arg > 4) {
+		case 0:
+		case 1:
+			if (arg > 4) {//共4个LED灯：序号1-4
+				return -EINVAL;
+			}
+			//GPK4-7-->LED1-4
+			tmp = readl(S3C64XX_GPKDAT);	 //读取GPKDAT的原始数据
+			tmp &= ~(1 << (4 + arg));      //LED序号1-4转换到对应的GPK4-7位：清零对应位
+			tmp |= ( (!cmd) << (4 + arg) );//根据命令设置对应位
+			writel(tmp, S3C64XX_GPKDAT);   //写入GPKDAT的新数据
+			//printk (DEVICE_NAME": %d %d\n", arg, cmd);
+			return 0;
+			
+		default:
 			return -EINVAL;
-		}
-		tmp = readl(S3C64XX_GPKDAT);
-		tmp &= ~(1 << (4 + arg));
-		tmp |= ( (!cmd) << (4 + arg) );
-		writel(tmp, S3C64XX_GPKDAT);
-		//printk (DEVICE_NAME": %d %d\n", arg, cmd);
-		return 0;
-		
-	default:
-		return -EINVAL;
 	}
 }
 
 /*文件操作结构体*/
 static struct file_operations dev_fops = {
 	.owner			= THIS_MODULE,
-	.unlocked_ioctl	= Tiny6410_leds_ioctl,
+	.unlocked_ioctl	= Tiny6410_leds_ioctl,//通过ioctl,控制LED
 };
 
 static struct miscdevice misc = {
 	.minor = MISC_DYNAMIC_MINOR,
 	.name = DEVICE_NAME,
-	.fops = &dev_fops,
+	.fops = &dev_fops,/*文件操作结构体*/
 };
 
+/*模块初始化*/
 static int __init dev_init(void)
 {
 	int ret;
@@ -90,6 +100,7 @@ static int __init dev_init(void)
 	return ret;
 }
 
+/*模块卸载*/
 static void __exit dev_exit(void)
 {
 	/*注销混杂型字符设备驱动*/

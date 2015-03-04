@@ -4,6 +4,10 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 
 /*Created By qinfei*/
@@ -73,7 +77,8 @@ static void Leds_On(char led_number)
 			led_number = 0;
 			
 	//2.打开指定的LED
-	write(fd, &led_number, LEDS_ON);
+	//write(fd, &led_number, LEDS_ON);
+	ioctl(fd, LEDS_ON, led_number);
 }
 
 /*leds关闭:关闭指定的LED*/
@@ -86,7 +91,8 @@ static void Leds_Off(char led_number)
 			led_number = 0;
 			
 	//2.关闭指定的LED
-	write(fd, &led_number, LEDS_OFF);
+	//write(fd, &led_number, LEDS_OFF);
+	ioctl(fd, LEDS_OFF, led_number);
 }
 
 /*leds应用控制:实现LED具体的应用逻辑控制*/
