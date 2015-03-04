@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 		Leds_AppCtl();
 		
 		/*leds关闭设备文件*/
-		Leds_Destroy();
+		//Leds_Destroy();
 	};
 	
 	return 0;
