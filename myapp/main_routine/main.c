@@ -11,6 +11,7 @@
 
 /*Created By qinfei*/
 #include <debug.h>	
+#include <menu.h>	
 #include <leds.h>	
 
 int main(int argc, char **argv)
@@ -30,17 +31,26 @@ int main(int argc, char **argv)
 		dbg("Successfully Open /dev/leds!\n");	
 	}
 	
+	/*menu初始化*/
+	menu_init();
+	
+	/*根据命令选择菜单相应操作*/
+	dbg("Entering endless loop...\n");
+	menu_cmd();
+	
+/*	
 	dbg("Entering endless loop...\n");			
 	while(1) 
 	{
 		sleep(60);
 		
-		/*实现LED具体的应用逻辑控制*/
+		//实现LED具体的应用逻辑控制
 		Leds_AppCtl();
 		
 		/*leds关闭设备文件*/
 		//Leds_Destroy();
 	};
+*/
 	
 	return 0;
 }
