@@ -18,12 +18,11 @@
 #include <mach/regs-clock.h>
 #include <mach/regs-gpio.h>
 
-/* Tiny6410 board related header files */
 #include <plat/gpio-cfg.h>
 #include <mach/gpio-bank-n.h>
 #include <mach/gpio-bank-l.h>
 
-#define DEVICE_NAME     "buttons"	//设备名
+#define DEVICE_NAME     "buttons"
 
 struct button_irq_desc {
     int irq;
@@ -156,7 +155,7 @@ static unsigned int s3c64xx_buttons_poll( struct file *file, struct poll_table_s
     return mask;
 }
 
-/*文件操作结构体*/
+
 static struct file_operations dev_fops = {
     .owner   =   THIS_MODULE,
     .open    =   s3c64xx_buttons_open,
@@ -165,18 +164,16 @@ static struct file_operations dev_fops = {
     .poll    =   s3c64xx_buttons_poll,
 };
 
-
 static struct miscdevice misc = {
 	.minor = MISC_DYNAMIC_MINOR,
-	.name = DEVICE_NAME,	//设备名
-	.fops = &dev_fops,		//文件操作
+	.name = DEVICE_NAME,
+	.fops = &dev_fops,
 };
 
 static int __init dev_init(void)
 {
 	int ret;
 
-	/*注册混杂型字符设备驱动*/
 	ret = misc_register(&misc);
 
 	printk (DEVICE_NAME"\tinitialized\n");
@@ -186,7 +183,6 @@ static int __init dev_init(void)
 
 static void __exit dev_exit(void)
 {
-	/*注销混杂型字符设备驱动*/
 	misc_deregister(&misc);
 }
 
