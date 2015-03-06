@@ -1,4 +1,4 @@
-/**
+﻿/**
  * leds.c file implement Tiny6410.
  * Author: qinfei
  */
@@ -22,10 +22,10 @@
 static int fd;
 
 /*leds打开:打开指定的LED*/
-static void Leds_On(char led_number);
+static void Leds_On(int led_number);
 
 /*leds关闭:关闭指定的LED*/
-static void Leds_Off(char led_number);
+static void Leds_Off(int led_number);
 
 
 /*leds初始化:打开设备文件、打开所有的LED*/
@@ -40,9 +40,9 @@ int Leds_Init(void)
 	if(fd < 0)
 	{
 		err("leds device open error ! \n ");
-		err("Remember to create device node by '#mknod /dev/leds c 243 0' ! \n ");
 		return (ret = -1);
 	}
+	dbg("Successfully Open /dev/leds!\n");	
 	
 	//2.打开所有的LED
 	Leds_On(0);
@@ -69,30 +69,30 @@ void Leds_Destroy(void)
 }
 
 /*leds打开:打开指定的LED*/
-static void Leds_On(char led_number)
+static void Leds_On(int led_number)
 {
-	dbg("Going into Leds_On function!\n");
+	//dbg("Going into Leds_On function!\n");
+	dbg("Led(%d) On!\n",led_number);
 	
 	//1.判断led_number是否合法
 	if(led_number > MAX_TINY6410_LEDS_NUMBER)
 			led_number = 0;
 			
 	//2.打开指定的LED
-	//write(fd, &led_number, LEDS_ON);
 	ioctl(fd, LEDS_ON, led_number);
 }
 
 /*leds关闭:关闭指定的LED*/
-static void Leds_Off(char led_number)
+static void Leds_Off(int led_number)
 {
-	dbg("Going into Leds_Off function!\n");
+	//dbg("Going into Leds_Off function!\n");
+	dbg("Led(%d) Off!\n",led_number);
 	
 	//1.判断led_number是否合法
 	if(led_number > MAX_TINY6410_LEDS_NUMBER)
 			led_number = 0;
 			
 	//2.关闭指定的LED
-	//write(fd, &led_number, LEDS_OFF);
 	ioctl(fd, LEDS_OFF, led_number);
 }
 
@@ -133,7 +133,7 @@ void Leds_AppCtl(void)
 	sleep(5);
 	
 	dbg("Turned on all Leds one by one in Leds_AppCtl function!\n");
-	dbg("Going into Next Leds_AppCtl function Loop!\n");
+	dbg("Go out from Leds_AppCtl function!\n");
 	dbg("......\n");
 }
 

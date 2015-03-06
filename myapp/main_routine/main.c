@@ -1,4 +1,4 @@
-/*
+﻿/*
  *App for Tiny6410 test
  *main.c
  *Created by qinfei 20150228
@@ -14,30 +14,25 @@
 #include <menu.h>	
 #include <leds.h>	
 
+/*Linux 系统设备初始化工作*/
+void System_Init(void);
+
 int main(int argc, char **argv)
 {
-	int ret = 0;
+	int menu_num;
 	
 	dbg("Tiny6410 App start ...\n");
 
-	/*LED 初始化*/
-	ret = Leds_Init();
-	if(ret == -1)
+	System_Init();//系统初始化
+	
+	/*根据命令选择菜单相应操作:有30次机会去测试各项指令！*/
+	for(menu_num = 0; menu_num < 30; menu_num++)
 	{
-		err("Not Open /dev/leds!\n");			
+		menu_cmd();
+		printf("You have input %d times!\n",menu_num+1);
+		
 	}
-	else
-	{
-		dbg("Successfully Open /dev/leds!\n");	
-	}
-	
-	/*menu初始化*/
-	menu_init();
-	
-	/*根据命令选择菜单相应操作*/
-	dbg("Entering endless loop...\n");
-	menu_cmd();
-	
+
 /*	
 	dbg("Entering endless loop...\n");			
 	while(1) 
@@ -47,12 +42,28 @@ int main(int argc, char **argv)
 		//实现LED具体的应用逻辑控制
 		Leds_AppCtl();
 		
-		/*leds关闭设备文件*/
-		//Leds_Destroy();
 	};
 */
-	
+	dbg("Enter into Linux System! \n");
+	dbg("You can edit the System file! \n");
 	return 0;
 }
 
+
+/*Linux 系统设备初始化工作*/
+void System_Init(void)
+{
+	int ret = 0;
+	dbg("Going into System_Init function!\n");
+
+	/*LED 初始化*/
+	ret = Leds_Init();
+	if(ret == -1)
+	{
+		err("Not Open /dev/leds!\n");			
+	}
+	
+	/*menu初始化*/
+	menu_init();
+}
 
