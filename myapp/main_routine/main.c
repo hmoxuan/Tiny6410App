@@ -1,58 +1,54 @@
-/*
+/**
  *App for Tiny6410 test
  *main.c
  *Created by qinfei 20150228
  */
-#include <stdio.h>	/*æ ‡å‡†è¾“å…¥è¾“å‡ºå®šä¹‰*/
-#include <stdlib.h>
-#include <pthread.h>		/*Linuxä¸‹çš„å¤šçº¿ç¨‹*/
-#include <semaphore.h>	/*Linuxä¸‹çš„ä¿¡å·é‡*/
-#include <sys/wait.h>   /*Linuxä¸‹ç­‰å¾…åºåˆ—ç›¸å…³ï¼šå¦‚waitã€waitpid*/
 
 /*Created By qinfei*/
-#include <debug.h>	
-#include <menu.h>	
-#include <leds.h>	
+#include <debug.h>
+#include <menu.h>
+#include <leds.h>
+
+/*Linux ÏµÍ³Éè±¸³õÊ¼»¯¹¤×÷*/
+void System_Init(void);
 
 int main(int argc, char **argv)
 {
-	int ret = 0;
-	
-	dbg("Tiny6410 App start ...\n");
+	int menu_num;
 
-	/*LED åˆå§‹åŒ–*/
+	dbg("Tiny6410App start ...\n");
+
+	System_Init();//ÏµÍ³³õÊ¼»¯
+
+	/*¸ù¾İÃüÁîÑ¡Ôñ²Ëµ¥ÏàÓ¦²Ù×÷:ÓĞ30´Î»ú»áÈ¥²âÊÔ¸÷ÏîÖ¸Áî£¡*/
+	for(menu_num = 0; menu_num < 30; menu_num++)
+	{
+		menu_cmd();//¸ù¾İÃüÁîÑ¡Ôñ²Ëµ¥ÏàÓ¦²Ù×÷
+		printf("You have input %d times!\n",menu_num+1);
+	}
+
+	dbg("Enter into Linux System! \n");
+	dbg("You can edit the System file! \n");
+
+	return 0;
+}
+
+/*Linux ÏµÍ³Éè±¸³õÊ¼»¯¹¤×÷*/
+void System_Init(void)
+{
+	int ret = 0;
+	dbg("Going into System_Init function!\n");
+
+	/*LED ³õÊ¼»¯*/
 	ret = Leds_Init();
 	if(ret == -1)
 	{
-		err("Not Open /dev/leds!\n");			
+		err("Not Open /dev/leds!\n");
 	}
-	else
-	{
-		dbg("Successfully Open /dev/leds!\n");	
-	}
-	
-	/*menuåˆå§‹åŒ–*/
+
+	/*menu³õÊ¼»¯*/
 	menu_init();
-	
-	/*æ ¹æ®å‘½ä»¤é€‰æ‹©èœå•ç›¸åº”æ“ä½œ*/
-	dbg("Entering endless loop...\n");
-	menu_cmd();
-	
-/*	
-	dbg("Entering endless loop...\n");			
-	while(1) 
-	{
-		sleep(60);
-		
-		//å®ç°LEDå…·ä½“çš„åº”ç”¨é€»è¾‘æ§åˆ¶
-		Leds_AppCtl();
-		
-		/*ledså…³é—­è®¾å¤‡æ–‡ä»¶*/
-		//Leds_Destroy();
-	};
-*/
-	
-	return 0;
 }
+
 
 

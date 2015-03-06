@@ -1,5 +1,5 @@
 /**
- * menu.c file implement Tiny6410.
+ * menu.h file implement Tiny6410.
  * Author: qinfei 2015.03.04
  */
 #ifndef __MEHU_H__

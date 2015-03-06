@@ -1,22 +1,22 @@
 /**
- * leds.c file implement Tiny6410.
+ * leds.h file implement Tiny6410.
  * Author: qinfei
  */
 #ifndef __LEDS_H__
 #define __LEDS_H__
 
 #ifdef __cplusplus
-extern "C" {/*è¡¨ç¤ºç¼–è¯‘ç”Ÿæˆçš„å†…å®¹ç¬¦å·åï¼Œä½¿ç”¨Cçº¦å®š*/
+extern "C" {/*±íÊ¾±àÒëÉú³ÉµÄÄÚÈİ·ûºÅÃû£¬Ê¹ÓÃCÔ¼¶¨*/
 #endif
 
 
-/*ledsåˆå§‹åŒ–:æ‰“å¼€è®¾å¤‡æ–‡ä»¶ã€æ‰“å¼€æ‰€æœ‰çš„LED*/
+/*leds³õÊ¼»¯:´ò¿ªÉè±¸ÎÄ¼ş¡¢´ò¿ªËùÓĞµÄLED*/
 int Leds_Init(void);
 
-/*ledså…³é—­è®¾å¤‡æ–‡ä»¶:å…³é—­æ‰€æœ‰çš„LEDã€é‡Šæ”¾èµ„æº*/
+/*leds¹Ø±ÕÉè±¸ÎÄ¼ş:¹Ø±ÕËùÓĞµÄLED¡¢ÊÍ·Å×ÊÔ´*/
 void Leds_Destroy(void);
 
-/*ledsåº”ç”¨æ§åˆ¶:å®ç°LEDå…·ä½“çš„åº”ç”¨é€»è¾‘æ§åˆ¶*/
+/*ledsÓ¦ÓÃ¿ØÖÆ:ÊµÏÖLED¾ßÌåµÄÓ¦ÓÃÂß¼­¿ØÖÆ*/
 void Leds_AppCtl(void);
 
 
@@ -25,3 +25,5 @@ void Leds_AppCtl(void);
 #endif
 
 #endif  /*__LEDS_H__*/
+
+

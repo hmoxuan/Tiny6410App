@@ -3,48 +3,43 @@
  * Author: qinfei
  */
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 
 /*Created By qinfei*/
-#include <debug.h>	
+#include <debug.h>
 
-//Tiny6410å…±4ä¸ªLEDï¼Œç¼–å·0-3
+//Tiny6410¹²4¸öLED£¬±àºÅ0-3
 #define MAX_TINY6410_LEDS_NUMBER 3
 #define LEDS_ON  1
 #define LEDS_OFF 0
 
-//ledsè®¾å¤‡æ–‡ä»¶æè¿°ç¬¦
+//ledsÉè±¸ÎÄ¼şÃèÊö·û
 static int fd;
 
-/*ledsæ‰“å¼€:æ‰“å¼€æŒ‡å®šçš„LED*/
-static void Leds_On(char led_number);
+/*leds´ò¿ª:´ò¿ªÖ¸¶¨µÄLED*/
+static void Leds_On(int led_number);
 
-/*ledså…³é—­:å…³é—­æŒ‡å®šçš„LED*/
-static void Leds_Off(char led_number);
+/*leds¹Ø±Õ:¹Ø±ÕÖ¸¶¨µÄLED*/
+static void Leds_Off(int led_number);
 
 
-/*ledsåˆå§‹åŒ–:æ‰“å¼€è®¾å¤‡æ–‡ä»¶ã€æ‰“å¼€æ‰€æœ‰çš„LED*/
+/*leds³õÊ¼»¯:´ò¿ªÉè±¸ÎÄ¼ş¡¢´ò¿ªËùÓĞµÄLED*/
 int Leds_Init(void)
 {
 	int ret = 0;
-	
+
 	dbg("Going into Leds_Init function!\n");
-	
-	//1.æ‰“å¼€ledsè®¾å¤‡æ–‡ä»¶
+
+	//1.´ò¿ªledsÉè±¸ÎÄ¼ş
 	fd = open("/dev/leds", O_RDWR);
 	if(fd < 0)
 	{
 		err("leds device open error ! \n ");
-		err("Remember to create device node by '#mknod /dev/leds c 243 0' ! \n ");
 		return (ret = -1);
 	}
-	
-	//2.æ‰“å¼€æ‰€æœ‰çš„LED
+	dbg("Successfully Open /dev/leds!\n");
+
+	//2.´ò¿ªËùÓĞµÄLED
 	Leds_On(0);
 	Leds_On(1);
 	Leds_On(2);
@@ -52,88 +47,90 @@ int Leds_Init(void)
 	dbg("Opened 4 Leds in Leds_Init function!\n");
 }
 
-/*ledså…³é—­è®¾å¤‡æ–‡ä»¶:å…³é—­æ‰€æœ‰çš„LEDã€é‡Šæ”¾èµ„æº*/
+/*leds¹Ø±ÕÉè±¸ÎÄ¼ş:¹Ø±ÕËùÓĞµÄLED¡¢ÊÍ·Å×ÊÔ´*/
 void Leds_Destroy(void)
 {
 	dbg("Going into Leds_Destroy function!\n");
-	
-	//1.å…³é—­æ‰€æœ‰çš„LED
+
+	//1.¹Ø±ÕËùÓĞµÄLED
 	Leds_Off(0);
 	Leds_Off(1);
 	Leds_Off(2);
 	Leds_Off(3);
-	
-	//2.å…³é—­ledsè®¾å¤‡æ–‡ä»¶
+
+	//2.¹Ø±ÕledsÉè±¸ÎÄ¼ş
 	close(fd);
 	dbg("/dev/leds closed!\n");
 }
 
-/*ledsæ‰“å¼€:æ‰“å¼€æŒ‡å®šçš„LED*/
-static void Leds_On(char led_number)
+/*leds´ò¿ª:´ò¿ªÖ¸¶¨µÄLED*/
+static void Leds_On(int led_number)
 {
-	dbg("Going into Leds_On function!\n");
-	
-	//1.åˆ¤æ–­led_numberæ˜¯å¦åˆæ³•
+	//dbg("Going into Leds_On function!\n");
+	dbg("Led(%d) On!\n",led_number);
+
+	//1.ÅĞ¶Ïled_numberÊÇ·ñºÏ·¨
 	if(led_number > MAX_TINY6410_LEDS_NUMBER)
 			led_number = 0;
-			
-	//2.æ‰“å¼€æŒ‡å®šçš„LED
-	//write(fd, &led_number, LEDS_ON);
+
+	//2.´ò¿ªÖ¸¶¨µÄLED
 	ioctl(fd, LEDS_ON, led_number);
 }
 
-/*ledså…³é—­:å…³é—­æŒ‡å®šçš„LED*/
-static void Leds_Off(char led_number)
+/*leds¹Ø±Õ:¹Ø±ÕÖ¸¶¨µÄLED*/
+static void Leds_Off(int led_number)
 {
-	dbg("Going into Leds_Off function!\n");
-	
-	//1.åˆ¤æ–­led_numberæ˜¯å¦åˆæ³•
+	//dbg("Going into Leds_Off function!\n");
+	dbg("Led(%d) Off!\n",led_number);
+
+	//1.ÅĞ¶Ïled_numberÊÇ·ñºÏ·¨
 	if(led_number > MAX_TINY6410_LEDS_NUMBER)
 			led_number = 0;
-			
-	//2.å…³é—­æŒ‡å®šçš„LED
-	//write(fd, &led_number, LEDS_OFF);
+
+	//2.¹Ø±ÕÖ¸¶¨µÄLED
 	ioctl(fd, LEDS_OFF, led_number);
 }
 
-/*ledsåº”ç”¨æ§åˆ¶:å®ç°LEDå…·ä½“çš„åº”ç”¨é€»è¾‘æ§åˆ¶*/
+/*ledsÓ¦ÓÃ¿ØÖÆ:ÊµÏÖLED¾ßÌåµÄÓ¦ÓÃÂß¼­¿ØÖÆ*/
 void Leds_AppCtl(void)
 {
 	dbg("Going into Leds_AppCtl function!\n");
-	
-	//1.ä¾æ¬¡å…³é—­LED
+
+	//1.ÒÀ´Î¹Ø±ÕLED
 	Leds_Off(3);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_Off(2);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_Off(1);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_Off(0);
-	sleep(5);
-	
+	sleep(1);
+
 	dbg("Turned off all Leds one by one in Leds_AppCtl function!\n");
-	
-	//ä¸­é—´åœé¡¿
-	sleep(30);
-	
-	//2.ä¾æ¬¡æ‰“å¼€LED
+
+	//ÖĞ¼äÍ£¶Ù
+	sleep(10);
+
+	//2.ÒÀ´Î´ò¿ªLED
 	Leds_On(3);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_On(2);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_On(1);
-	sleep(5);
-	
+	sleep(1);
+
 	Leds_On(0);
-	sleep(5);
-	
+	sleep(1);
+
 	dbg("Turned on all Leds one by one in Leds_AppCtl function!\n");
-	dbg("Going into Next Leds_AppCtl function Loop!\n");
+	dbg("Go out from Leds_AppCtl function!\n");
 	dbg("......\n");
 }
+
+
 
