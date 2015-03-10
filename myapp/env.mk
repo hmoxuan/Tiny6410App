@@ -6,6 +6,9 @@ CC := $(CROSS_COMPILE)gcc
 INCLUDE_DIR := \
 	-I$(MAKEROOT)/include \
 	-I$(MAKEROOT)/leds \
+	-I$(MAKEROOT)/keys \
+	-I$(MAKEROOT)/pwm \
+	-I$(MAKEROOT)/adc \
 	-I$(MAKEROOT)/main_routine \
 
 CFLAGS := $(INCLUDE_DIR)

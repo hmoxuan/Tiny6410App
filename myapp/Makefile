@@ -1,6 +1,9 @@
 export MAKEROOT := $(shell pwd)
 
 TARGET_DIRS := leds \
+	keys \
+	pwm \
+	adc \
 	main_routine \
 
 include ./env.mk	

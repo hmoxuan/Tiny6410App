@@ -7,6 +7,9 @@
 /*Created By qinfei*/
 #include <debug.h>
 #include <leds.h>
+#include <keys.h>
+#include <pwm.h>
+#include <adc.h>
 
 /*menu初始化:对菜单进行必要初始化*/
 void menu_init(void)
@@ -49,22 +52,25 @@ void menu_cmd(void)
 	{
 		case '1':
 			dbg("Call Test the Leds function !\n");
-		  Leds_AppCtl();	//实现LED具体的应用逻辑控制
-		  sleep(2);
+			Leds_AppCtl();	//实现LED具体的应用逻辑控制
+			sleep(2);
 			break;
 
 		case '2':
 			dbg("Call Test the keys function !\n");
+			keys_AppCtl();	/*实现keys具体的应用逻辑控制*/
 			sleep(2);
 			break;
 
 		case '3':
 			dbg("Call Test the buzzer function !\n");
+			pwm_AppCtl();	/*实现pwm具体的应用逻辑控制*/
 			sleep(2);
 			break;
 
 		case '4':
 			dbg("Call Test the adc function !\n");
+			adc_AppCtl();	/*实现adc具体的应用逻辑控制*/
 			sleep(2);
 			break;
 

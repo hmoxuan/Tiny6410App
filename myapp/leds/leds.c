@@ -131,6 +131,3 @@ void Leds_AppCtl(void)
 	dbg("Go out from Leds_AppCtl function!\n");
 	dbg("......\n");
 }
-
-
-

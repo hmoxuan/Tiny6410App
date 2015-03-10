@@ -42,7 +42,7 @@
 static long Tiny6410_leds_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	unsigned tmp;
-	
+
 	//根据命令控制LED灯亮灭
 	switch(cmd) {
 		case 0:
@@ -57,7 +57,7 @@ static long Tiny6410_leds_ioctl(struct file *filp, unsigned int cmd, unsigned lo
 			writel(tmp, S3C64XX_GPKDAT);   //写入GPKDAT的新数据
 			//printk (DEVICE_NAME": %d %d\n", arg, cmd);
 			return 0;
-			
+
 		default:
 			return -EINVAL;
 	}
@@ -86,7 +86,7 @@ static int __init dev_init(void)
 		tmp = readl(S3C64XX_GPKCON);
 		tmp = (tmp & ~(0xffffU<<16))|(0x1111U<<16);
 		writel(tmp, S3C64XX_GPKCON);
-		
+
 		tmp = readl(S3C64XX_GPKDAT);
 		tmp |= (0xF << 4);
 		writel(tmp, S3C64XX_GPKDAT);

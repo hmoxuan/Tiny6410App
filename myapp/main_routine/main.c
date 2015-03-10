@@ -8,6 +8,8 @@
 #include <debug.h>
 #include <menu.h>
 #include <leds.h>
+#include <keys.h>
+#include <adc.h>
 
 /*Linux 系统设备初始化工作*/
 void System_Init(void);
@@ -39,11 +41,25 @@ void System_Init(void)
 	int ret = 0;
 	dbg("Going into System_Init function!\n");
 
-	/*LED 初始化*/
+	/*1.LED 初始化*/
 	ret = Leds_Init();
 	if(ret == -1)
 	{
 		err("Not Open /dev/leds!\n");
+	}
+
+	/*2.keys初始化*/
+	ret = keys_Init();
+	if(ret == -1)
+	{
+		err("Not Open /dev/buttons!\n");
+	}
+
+	/*3.adc初始化*/
+	ret = adc_Init();
+	if(ret == -1)
+	{
+		err("Not Open /dev/adc!\n");
 	}
 
 	/*menu初始化*/
