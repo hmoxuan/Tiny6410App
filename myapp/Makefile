@@ -4,6 +4,8 @@ TARGET_DIRS := leds \
 	keys \
 	pwm \
 	adc \
+	ds18b20 \
+	projectlib \
 	main_routine \
 
 include ./env.mk	

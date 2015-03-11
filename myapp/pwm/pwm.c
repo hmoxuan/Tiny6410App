@@ -2,13 +2,11 @@
  * pwm.c file implement Tiny6410.
  * Author: qinfei 2015.03.09
  */
-#include <stdio.h>
-#include <termios.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 /*Created By qinfei*/
 #include <debug.h>
+#include <stringlib.h>
 
 #define PWM_IOCTL_SET_FREQ 1	//定义宏变量,用于后面的 ioctl 中的控制命令
 #define PWM_IOCTL_STOP 2		//定义宏变量,用于后面的 ioctl 中的控制命令
@@ -16,9 +14,6 @@
 
 /* leds设备文件描述符 */
 static int fd = -1;
-
-/*输入的键值*/
-static int getch(void);
 
 /*pwm初始化:打开设备文件*/
 static void open_buzzer(void);
@@ -32,44 +27,6 @@ static void set_buzzer_freq(int freq);
 /*关闭 buzzer*/
 static void stop_buzzer(void);
 
-/*获取输入的键值*/
-static int getch(void)
-{
-    struct termios oldt,newt;
-    int ch;
-
-    /*1.判断是否为标准输入*/
-    if (!isatty(STDIN_FILENO)) {
-        fprintf(stderr, "this problem should be run at a terminal\n");
-        exit(1);
-    }
-    /*2.获取与终端相关的参数,将获得的信息保存在oldt变量中*/
-    if(tcgetattr(STDIN_FILENO, &oldt) < 0) {
-        perror("save the terminal setting");
-        exit(1);
-    }
-
-    /*3.修改终端信息的结束控制字符*/
-    newt = oldt;
-    newt.c_lflag &= ~( ICANON | ECHO );//使用标准输入模式、显示输入字符
-
-    /*使用tcsetattr函数,将修改后的终端参数设置到标准输入中*/
-    if(tcsetattr(STDIN_FILENO,TCSANOW, &newt) < 0) {
-        perror("set terminal");
-        exit(1);
-    }
-
-    /*4.读取输入的字符.*/
-    ch = getchar();
-
-    /*5.restore termial setting.*/
-    if(tcsetattr(STDIN_FILENO,TCSANOW,&oldt) < 0) {
-        perror("restore the termial setting");
-        exit(1);
-    }
-
-    return ch;
-}
 
 /*pwm初始化:打开设备文件*/
 static void open_buzzer(void)
@@ -136,7 +93,7 @@ void pwm_AppCtl(void)
     printf( "Press +/- to increase/reduce the frequency of the BUZZER.\n" ) ;
     printf( "Press 'ESC' key to Exit this program.\n\n" );
 
-    while( 1 )
+    while(1)
     {
     	/*设置pwm频率*/
         set_buzzer_freq(freq);

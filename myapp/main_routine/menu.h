@@ -19,5 +19,5 @@ void menu_cmd(void);
 }
 #endif
 
-#endif
+#endif	/*__MEHU_H__*/
 

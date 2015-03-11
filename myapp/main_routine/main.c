@@ -10,6 +10,7 @@
 #include <leds.h>
 #include <keys.h>
 #include <adc.h>
+#include <ds18b20.h>
 
 /*Linux 系统设备初始化工作*/
 void System_Init(void);
@@ -60,6 +61,13 @@ void System_Init(void)
 	if(ret == -1)
 	{
 		err("Not Open /dev/adc!\n");
+	}
+
+	/*4.ds18b20初始化*/
+	ret = ds18b20_Init();
+	if(ret == -1)
+	{
+		err("Not Open /dev/ds18b20!\n");
 	}
 
 	/*menu初始化*/

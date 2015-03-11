@@ -2,17 +2,7 @@
  * keys.c file implement Tiny6410.
  * Author: qinfei 2015.03.09
  */
-
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <errno.h>
 
 /*Created By qinfei*/
 #include <debug.h>
@@ -37,6 +27,8 @@ int keys_Init(void)
 		err("open device buttons error!");
 		return (ret = -1);
 	}
+
+	dbg("Successfully Open /dev/buttons!\n");
 	return ret;
 }
 
@@ -53,24 +45,43 @@ void keys_AppCtl(void)
 	char current_buttons[6];
 	int count_of_changed_key;
 	int i;
+
 	dbg("Going into keys_AppCtl function!\n");
+	printf( "\nKEY TEST !\n" );
+	printf( "Please press Key1-6 .\n" ) ;
+	printf( "Key6 to Exit this program.\n" );
 
-	//读取键值放到current_buttons[]中
-	if(read(buttons_fd, current_buttons, sizeof(current_buttons)) != sizeof(current_buttons)){
-		err("read buttons:");
-		exit(1);
-	}
+	while(1)
+	{
+		/*执行按键识别操作*/
+		//读取键值放到current_buttons[]中
+		if(read(buttons_fd, current_buttons, sizeof(current_buttons)) != sizeof(current_buttons))
+		{
+			err("read buttons:");
+			exit(1);
+		}
 
-	for(i = 0, count_of_changed_key = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++){
-		//若某一键值发生变化，则更新至buttons[]
-		if(buttons[i] != current_buttons[i]){
-			buttons[i] = current_buttons[i];
-			printf("%s key %d is %s", count_of_changed_key? ", ": "", i+1, buttons[i] == '0' ? "up":"down");
-			count_of_changed_key++;
+		for(i = 0, count_of_changed_key = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++)
+		{
+			//若某一键值发生变化，则更新至buttons[]
+			if(buttons[i] != current_buttons[i])
+			{
+				buttons[i] = current_buttons[i];
+				printf("%s key %d is %s", count_of_changed_key? ", ": "", i+1, buttons[i] == '0' ? "up":"down");
+				count_of_changed_key++;
+				
+				if(i == 5)//Key6退出按键测试程序
+				{
+					dbg("Going out from keys_AppCtl function!\n");
+					keys_Destroy();
+					exit(0);
+				}
+			}
+		}
+
+		if(count_of_changed_key)
+		{
+			printf("\n");
 		}
 	}
-
-    if(count_of_changed_key){
-    	printf("\n");
-    }
 }

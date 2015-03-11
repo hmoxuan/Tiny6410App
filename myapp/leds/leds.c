@@ -2,7 +2,6 @@
  * leds.c file implement Tiny6410.
  * Author: qinfei
  */
-#include <stdio.h>
 #include <fcntl.h>
 
 /*Created By qinfei*/
@@ -66,7 +65,6 @@ void Leds_Destroy(void)
 /*leds打开:打开指定的LED*/
 static void Leds_On(int led_number)
 {
-	//dbg("Going into Leds_On function!\n");
 	dbg("Led(%d) On!\n",led_number);
 
 	//1.判断led_number是否合法
@@ -80,7 +78,6 @@ static void Leds_On(int led_number)
 /*leds关闭:关闭指定的LED*/
 static void Leds_Off(int led_number)
 {
-	//dbg("Going into Leds_Off function!\n");
 	dbg("Led(%d) Off!\n",led_number);
 
 	//1.判断led_number是否合法

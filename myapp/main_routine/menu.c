@@ -6,10 +6,12 @@
 
 /*Created By qinfei*/
 #include <debug.h>
+#include <stringlib.h>
 #include <leds.h>
 #include <keys.h>
 #include <pwm.h>
 #include <adc.h>
+#include <ds18b20.h>
 
 /*menu初始化:对菜单进行必要初始化*/
 void menu_init(void)
@@ -22,7 +24,7 @@ void menu_cmd(void)
 {
 	char cmd = '0';//输入的命令
 
-	dbg("Going into menu_cmd function!\n");
+	dbg("\nGoing into menu_cmd function!\n");
 
 	/*命令操作提示信息*/
 	printf("Execute according to those command!\n");
@@ -38,7 +40,7 @@ void menu_cmd(void)
 	printf("Please input your command!\n");
 
 	/*读取输入的命令字*/
-	cmd = getchar();
+	cmd = getch();
 	printf("Your command is %c!\n",cmd);
 
 	if( cmd == '\r')
@@ -86,6 +88,7 @@ void menu_cmd(void)
 
 		case '7':
 			dbg("Call Test the Temperature function !\n");
+			ds18b20_AppCtl();	/*实现ds18b20具体的应用逻辑控制*/
 			sleep(2);
 			break;
 
