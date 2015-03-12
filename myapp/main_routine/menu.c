@@ -12,6 +12,7 @@
 #include <pwm.h>
 #include <adc.h>
 #include <ds18b20.h>
+#include <lcds70.h>
 
 /*menu初始化:对菜单进行必要初始化*/
 void menu_init(void)
@@ -20,7 +21,8 @@ void menu_init(void)
 }
 
 /*根据命令选择菜单相应操作*/
-void menu_cmd(void)
+//void menu_cmd(void)
+void menu_cmd(char **argv)//argv[1]传递LCD显示的图片
 {
 	char cmd = '0';//输入的命令
 
@@ -78,6 +80,7 @@ void menu_cmd(void)
 
 		case '5':
 			dbg("Call Test the lcd function !\n");
+			lcds70_AppCtl(argv); /*实现lcd具体的应用逻辑控制*/
 			sleep(2);
 			break;
 

@@ -5,6 +5,7 @@ TARGET_DIRS := leds \
 	pwm \
 	adc \
 	ds18b20 \
+	lcds70 \
 	projectlib \
 	main_routine \
 

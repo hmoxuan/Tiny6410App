@@ -10,6 +10,7 @@ INCLUDE_DIR := \
 	-I$(MAKEROOT)/pwm \
 	-I$(MAKEROOT)/adc \
 	-I$(MAKEROOT)/ds18b20 \
+	-I$(MAKEROOT)/lcds70 \
 	-I$(MAKEROOT)/projectlib \
 	-I$(MAKEROOT)/main_routine \
 
