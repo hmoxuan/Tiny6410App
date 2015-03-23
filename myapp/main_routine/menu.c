@@ -21,8 +21,6 @@ void menu_init(void)
 }
 
 /*根据命令选择菜单相应操作*/
-//void menu_cmd(void)
-//void menu_cmd(char **argv)//argv[1]传递LCD显示的图片
 void menu_cmd(void)//argv[1]传递LCD显示的图片
 {
 	char cmd = '0';//输入的命令

@@ -14,7 +14,6 @@ void menu_init(void);
 
 /*根据命令选择菜单相应操作*/
 void menu_cmd(void);
-//void menu_cmd(char **argv);//argv[1]传递LCD显示的图片
 
 #ifdef __cplusplus
 }

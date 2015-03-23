@@ -16,15 +16,14 @@
 #include <sys/mman.h>
 
 /*Created By qinfei*/
-#include <types.h>			//数据类型
-#include "resource.h"		//资源文件
-#include "database.h"		//数据库
-#include "lcds70.h"			//函数声明
+#include <types.h>		//数据类型
+#include "resource.h"	//资源文件
+#include "database.h"	//数据库
+#include "lcds70.h"		//函数声明
 
 //**********************************************************************
 //主函数
 //**********************************************************************
-//int lcds70_AppCtl(char **argv)
 int lcds70_AppCtl(void)
 {
 	int i;
@@ -51,14 +50,19 @@ int lcds70_AppCtl(void)
 	printf("Clear LCD Screen!\n");
 	sleep(2);
 
+	/*测试LCD*/
+	FbTest();
+	printf("LCD display RGB!\n");
+	sleep(5);
+
     /*4.显示图形：sw==0显示原图,非则显示选中时的图形*/
 	Dispicture(0,0,mainbmp,0);
 	printf("Display main.bmp !\n");
-	sleep(2);
+	sleep(5);
 
 	Dispicture(800-300,480-200,mainbmp,1);
 	printf("Display bootlogo.bmp !\n");
-	sleep(2);
+	sleep(5);
 
 	/*5.显示文本混合字符串*/
 	for(i=0;i<5;i++)
@@ -66,7 +70,7 @@ int lcds70_AppCtl(void)
 	printf("Display menu!\n");
 
     /*6.关闭TFT屏句柄与内存映射*/
-    FClose();			//关闭句柄与映射的内存
+    FClose();//关闭句柄与映射的内存
 
 	return(0);
 }
@@ -102,6 +106,14 @@ void Dispicture(int x,int y,const char *p,int sw)
 			pic.names[k]=p[i];//选中时文件名
 	}
 
+	/*****************************/
+	//0-0-1
+	// ./picture/main.bmp
+	// ./picture/mains.bmp
+	// 500-280-1
+	// ./picture/main.bmp
+	// ./picture/mains.bmp
+	/****************************/
 	printf("%d-%d-%d\n",pic.x,pic.y,form);
 	printf("%s\n",pic.name);
 	printf("%s\n",pic.names);
@@ -173,6 +185,10 @@ int DispBmp(int sw)
 	resy<<=8;
 	resy|=*(paddr+0x16+0);
 
+	/**
+	 * BMPSIZE=261192 offset=46 resx=1e0 resy=110
+	 * BMPSIZE=261192 offset=46 resx=1e0 resy=110
+	 */
 	printf("BMPSIZE=%d offset=%x resx=%x resy=%x\n",x.st_size,offset,resx,resy);
 
 	 /*5.显示图片*/
@@ -571,6 +587,7 @@ int DotInit(void)
 
     //4.字库长度x.st_size
 	hzk32_size=x.st_size;
+	/*Founded file hzk32 size = 1046790*/
 	printf("Founded file hzk32 size = %d\n",hzk32_size);
 
 
@@ -589,6 +606,7 @@ int DotInit(void)
         return(2);
     }
 	hzk24_size=x.st_size;
+	/*Founded file hzk24 size = 588822*/
 	printf("Founded file hzk24 size = %d\n",hzk24_size);
 
 
@@ -607,6 +625,7 @@ int DotInit(void)
         return(4);
     }
 	hzk16_size=x.st_size;
+	/*Founded file hzk16 size = 261702*/
 	printf("Founded file hzk16 size = %d\n",hzk16_size);
 
 
@@ -625,6 +644,7 @@ int DotInit(void)
         return(6);
     }
 	asc32_size=x.st_size;
+	/*Founded file asc32 size = 8198*/
 	printf("Founded file asc32 size = %d\n",asc32_size);
 
 
@@ -643,6 +663,7 @@ int DotInit(void)
         return(6);
     }
 	asc24_size=x.st_size;
+	/*Founded file asc24 size = 6150*/
 	printf("Founded file asc24 size = %d\n",asc24_size);
 
 
@@ -661,6 +682,7 @@ int DotInit(void)
         return(8);
     }
 	asc16_size=x.st_size;
+	/*Founded file asc16 size = 2054*/
 	printf("Founded file asc16 size = %d\n",asc16_size);
 
     return 0;
@@ -807,6 +829,7 @@ int FbInit(void)
 
     /*4.计算一帧图像的大小（显示缓冲区长度）*/
     screen_size = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;//缓冲区字节大小
+    /*800x480, 16bpp, screen_size = 768000*/
 	printf("%dx%d, %dbpp, screen_size = %d\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel, screen_size );
 
 	/* 5.将屏幕缓冲区映射到用户空间

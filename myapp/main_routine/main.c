@@ -27,7 +27,6 @@ int main(int argc, char **argv)
 	for(menu_num = 0; menu_num < 30; menu_num++)
 	{
 		menu_cmd();//根据命令选择菜单相应操作
-		//menu_cmd(argv);//根据命令选择菜单相应操作:argv[1]传递LCD显示的图片
 		printf("You have input %d times!\n",menu_num+1);
 	}
 

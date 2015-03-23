@@ -34,7 +34,6 @@ int HexBcd(int i);								//16进制码换成十进制BCD码
 void HexHexasc(int i,__u8 *p);					//16进制码换成16进制ASCII码
 int StrInt(const void *src,char leng,int mode);	//字符串转换成整数 leng=字符串长度 mode==dec10 or hex16
 
-//int lcds70_AppCtl(char **argv);//argv[1]传递LCD显示的图片
 int lcds70_AppCtl(void);
 
 #ifdef __cplusplus
